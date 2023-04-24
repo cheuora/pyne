@@ -141,7 +141,7 @@ def main_zone() -> pc.Component:
 def second_zone() -> pc.Component:
     return   pc.box(
                 pc.vstack(
-                    pc.heading("こんにちは!", font_size="4em"),
+                    pc.heading("こんにちは!", font_size="4em", font_family="LINESeedKR-Bd"),
                     pc.heading("Hello World Japanese Version"),
                     pc.box("Get started by editing ", pc.code(filename, font_size="1em")),
 
@@ -197,7 +197,7 @@ def navbar() ->pc.Component:
             pc.text("소통해요!", on_click=CondState.change_to_menu_4_1),
             pc.spacer(),
             pc.input(width="200px"),
-            pc.icon(tag="search2"),
+            pc.image(src='search.png', width="25px"),
 
             pc.spacer(),
             pc.spacer(),
@@ -205,8 +205,8 @@ def navbar() ->pc.Component:
 
 
             pc.button_group(
-                pc.button('日本語', on_click=CondState.change1),
-                pc.button('한국어', on_click=CondState.change2)
+                pc.button('JPN', on_click=CondState.change1),
+                pc.button('KOR', on_click=CondState.change2)
             )
         ),
 
@@ -218,6 +218,16 @@ def navbar() ->pc.Component:
     )
 
 # Add state and page to the app.
-app = pc.App(state=CondState, stylesheets=['mapo.css'])
+
+style = {
+    pc.Heading: {
+        "font_family": "LINESeedKR-Bd"
+    },
+    pc.Button: {
+        "font_family": "LINESeedKR-Rg",
+        "font_size": "sm"
+    }
+}
+app = pc.App(state=CondState, style=style, stylesheets=['mapo.css'])
 app.add_page(index)
 app.compile()

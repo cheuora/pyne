@@ -208,8 +208,6 @@ def navbar() ->pc.Component:
                 pc.button('日本語', on_click=CondState.change1),
                 pc.button('한국어', on_click=CondState.change2)
             )
-
-
         ),
 
         position="fixed",

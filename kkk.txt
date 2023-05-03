@@ -1,0 +1,5 @@
+Something is already running on port 8000. This is the port the backend runs on.
+Kill or change it? [k/c/n]: Please select one of the available options
+Kill or change it? [k/c/n]: Please select one of the available options
+Kill or change it? [k/c/n]: Please select one of the available options
+Kill or change it? [k/c/n]: 

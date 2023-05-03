@@ -1,11 +1,50 @@
 """Welcome to Pynecone! This file outlines the steps to create a basic app."""
 from pcconfig import config
+from pyne.communicate import question_form
+from pyne.gallary import gallary_form
 import pynecone as pc
+
+
 
 docs_url = "https://pynecone.io/docs/getting-started/introduction"
 filename = f"{config.app_name}/{config.app_name}.py"
 
+class ColorPicker(pc.Component):
+    library = "react-colorful"
+    tag = "HexColorPicker"
+    color: pc.Var[str]
+
+    @classmethod
+    def get_controlled_triggers(cls):
+        return {"on_change": pc.EVENT_ARG,}
+    
+
+class ImageGallary(pc.Component):
+    library = "react-image-gallery"
+    tag="ImageGallery"
+    images: pc.Var[str]
+
+
+color_picker = ColorPicker.create
+image_gallary = ImageGallary.create
+
+
+
 class CondState(pc.State):
+
+    # image
+    images = ["img1", "img2", "img3", "img4", "img5"]
+
+    # for Image Slide
+    value: int = 2
+
+    def set_end(self, value):
+        self.value = value
+
+    # for color picker
+    color: str = "#db114b"
+
+    # for menubar
 
     item_dictionary={'show1':True, 'show2': False,
                      'menu_1_1':False, 'menu_1_2':False,
@@ -67,52 +106,39 @@ def index() -> pc.Component:
     return  pc.vstack(
             navbar(),
             pc.spacer(),pc.spacer(),pc.spacer(),pc.spacer(),pc.spacer(),pc.spacer(),pc.spacer(),pc.spacer(),
-            
             pc.cond(
                 CondState.item_dictionary['show1'],
-                second_zone(),
-                pc.cond(
-                    CondState.item_dictionary['show2'],
-                    main_zone(),
-                    pc.cond(
-                        CondState.item_dictionary['menu_1_1'],
-                        pc.text("우리들의 이야기"),
-                        pc.cond(
-                            CondState.item_dictionary['menu_1_2'],
-                            pc.text("직무 이야기"),
-                            pc.cond(
-                                CondState.item_dictionary['menu_1_3'],
-                                pc.text("신규 입사자 이야기"),
-                                pc.cond(
-                                    CondState.item_dictionary['menu_2_1'],
-                                    pc.text("채용정보"),
-                                    pc.cond(
-                                        CondState.item_dictionary['menu_2_2'],
-                                        pc.text("상시채용정보"),
-                                        pc.cond(
-                                            CondState.item_dictionary['menu_3_1'],
-                                            pc.text("우리들 소개"),
-                                            pc.cond(
-                                                CondState.item_dictionary['menu_3_2'],
-                                                pc.text("우리들 문화"),
-                                                pc.cond(
-                                                    CondState.item_dictionary['menu_3_3'],
-                                                    pc.text("우리들 뉴스"),
-                                                    pc.cond(
-                                                        CondState.item_dictionary['menu_4_1'],
-                                                        pc.text("소통해요"),
-                                                        pc.spacer()
-                                                    )
-                                                )
-                                            )
-                                        )
-                                    ),
-                                )
-                            )
-                        )
-                    ),
-                ),
-            ),
+                second_zone()),
+            pc.cond(
+                CondState.item_dictionary['show2'],
+                main_zone()),
+            pc.cond(
+                CondState.item_dictionary['menu_1_1'],
+                pc.text("우리들의 이야기")),
+            pc.cond(
+                CondState.item_dictionary['menu_1_2'],
+                pc.text("직무 이야기")),
+            pc.cond(
+                CondState.item_dictionary['menu_1_3'],
+                pc.text("신규 입사자 이야기")),
+            pc.cond(
+                CondState.item_dictionary['menu_2_1'],
+                pc.text("채용정보")),
+            pc.cond(
+                CondState.item_dictionary['menu_2_2'],
+                pc.text("상시채용정보")),
+            pc.cond(
+                CondState.item_dictionary['menu_3_1'],
+                pc.text("우리들 소개")),
+            pc.cond(
+                CondState.item_dictionary['menu_3_2'],
+                pc.text("우리들 문화")),
+            pc.cond(
+                CondState.item_dictionary['menu_3_3'],
+                gallary_form()), #우리들 뉴스
+            pc.cond(
+                CondState.item_dictionary['menu_4_1'], #소통해요
+                question_form())
 
     )
 
@@ -194,10 +220,13 @@ def navbar() ->pc.Component:
                 ),
             ),
             pc.spacer(),
-            pc.text("소통해요!", on_click=CondState.change_to_menu_4_1),
+            pc.menu(
+                pc.menu_button("소통해요!", on_click=CondState.change_to_menu_4_1),
+            ),
+            
             pc.spacer(),
             pc.input(width="200px"),
-            pc.image(src='search.png', width="25px"),
+            pc.icon(tag='search2'),
 
             pc.spacer(),
             pc.spacer(),
